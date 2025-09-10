@@ -1,0 +1,40 @@
+Parameters:
+
+model: Optional. Which model to use: the possible options are MoveNet (default) and BlazePose.
+
+options: Optional. An object to change the default configuration of the model. The available options differ depending on which of the two underlying models are used.
+
+The default and available options are:
+
+{
+  modelType: "MULTIPOSE_LIGHTNING", // "MULTIPOSE_LIGHTNING", "SINGLEPOSE_LIGHTNING", or "SINGLEPOSE_THUNDER".
+  enableSmoothing: true,
+  minPoseScore: 0.25,
+  multiPoseMaxDimension: 256,
+  enableTracking: true,
+  trackerType: "boundingBox", // "keypoint" or "boundingBox"
+  trackerConfig: {},
+  modelUrl: undefined,
+  flipped: false
+}
+Copy to clipboardErrorCopied
+Options for both models:
+
+modelType - Optional
+String: The type of model to use. Default: "MULTIPOSE_LIGHTNING".
+enableSmoothing - Optional
+Boolean: Whether to smooth the pose landmarks across different input images to reduce jitter. Default: true.
+flipped - Optional
+Boolean: Flip the result horizontally. Defaults to false.
+Options for the MoveNet model only:
+
+minPoseScore - Optional
+Number: The minimum confidence score for a pose to be detected. Default: 0.25.
+multiPoseMaxDimension - Optional
+Number: The target maximum dimension to use as the input to the multi-pose model. Must be a mutiple of 32. Default: 256.
+enableTracking - Optional
+Boolean: Track each person across the frame with a unique ID. Default: true.
+trackerType - Optional
+String: Specify what type of tracker to use. Default: "boundingBox".
+trackerConfig - Optional
+Object: Specify tracker configurations. Use tf.js settings by default.
