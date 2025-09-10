@@ -94,7 +94,7 @@ function drawBoxes() {
 }
 
 function keyPressed() {
-    if (key === ' ') {
+    if (key === 's' || key === 'S') {
         showVideo = !showVideo;
     }
 }

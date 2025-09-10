@@ -166,6 +166,9 @@ function showAllPoints() {
                 showPoint(point, color(0, 255, 0));
             }
         }
+        
+        // Draw skeleton connections
+        drawSkeleton(personIndex);
     });
 }
 
@@ -239,6 +242,62 @@ function isValidPoint(point) {
     return point && 
            typeof point.x === 'number' && 
            typeof point.y === 'number';
+}
+
+// Function to draw skeleton connections between keypoints
+function drawSkeleton(personIndex) {
+    // Define the connections for MoveNet keypoints
+    const connections = [
+        // Head
+        [0, 1],   // nose to left_eye
+        [0, 2],   // nose to right_eye
+        [1, 3],   // left_eye to left_ear
+        [2, 4],   // right_eye to right_ear
+        
+        // Torso
+        [5, 6],   // left_shoulder to right_shoulder
+        [5, 11],  // left_shoulder to left_hip
+        [6, 12],  // right_shoulder to right_hip
+        [11, 12], // left_hip to right_hip
+        
+        // Left arm
+        [5, 7],   // left_shoulder to left_elbow
+        [7, 9],   // left_elbow to left_wrist
+        
+        // Right arm
+        [6, 8],   // right_shoulder to right_elbow
+        [8, 10],  // right_elbow to right_wrist
+        
+        // Left leg
+        [11, 13], // left_hip to left_knee
+        [13, 15], // left_knee to left_ankle
+        
+        // Right leg
+        [12, 14], // right_hip to right_knee
+        [14, 16]  // right_knee to right_ankle
+    ];
+    
+    // Draw each connection
+    stroke(0, 255, 0); // Green lines
+    strokeWeight(3);
+    noFill();
+    
+    connections.forEach(([startIdx, endIdx]) => {
+        const startPoint = getKeypoint(startIdx, personIndex);
+        const endPoint = getKeypoint(endIdx, personIndex);
+        
+        if (startPoint && endPoint && 
+            startPoint.confidence > confidenceThreshold && 
+            endPoint.confidence > confidenceThreshold) {
+            line(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+        }
+    });
+}
+
+function keyPressed() {
+    if (key === 's' || key === 'S') {
+        showVideo = !showVideo;
+    }
 }
 function keyPressed() {
   if (key === ' ') {
